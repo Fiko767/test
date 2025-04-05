@@ -26,10 +26,24 @@ jobs:
         # Install any additional dependencies your config needs
         sudo apt install -y ripgrep fzf
 
+    - name: Set up Neovim configuration
+      run: |
+        # Lösche das Standard-Neovim-Konfigurationsverzeichnis (falls es existiert)
+        rm -rf ~/.config/nvim
+        
+        # Kopiere die Konfiguration aus dem Repository
+        mkdir -p ~/.config/nvim
+        cp -r ./path/to/your/nvim/config/* ~/.config/nvim/
+
+    - name: Install Neovim Plugins
+      run: |
+        # Wenn du ein Plugin-Manager wie 'vim-plug' oder 'packer' verwendest
+        nvim --headless +PlugInstall +qall  # Für vim-plug
+        # oder
+        # nvim --headless +PackerSync +qall  # Für Packer
+
     - name: Test Neovim configuration
       run: |
-        # Set up a minimal configuration to test your setup
-        nvim --headless +PlugInstall +qall
-        nvim --headless +MasonUpdate +qall
-        # Hier kannst du Tests für deine Konfiguration einfügen, z.B. öffnen eines Files und prüfen
-        nvim --headless -c 'qa!'
+        # Teste die Konfiguration, indem Neovim im headless Mode läuft
+        nvim --headless -c 'qa!'  # Schließt Neovim sofort ohne Interaktion
+
