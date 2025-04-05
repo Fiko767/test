@@ -1,4 +1,4 @@
-name: Test Neovim Config
+name: Test Neovim Config in Cloud
 
 on:
   push:
@@ -9,24 +9,34 @@ on:
       - main
 
 jobs:
-  test:
+  setup:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Install Neovim
+    - name: Install Neovim and Dependencies
       run: |
         sudo apt update
-        sudo apt install -y neovim
-
-    - name: Install dependencies
+        sudo apt install -y neovim ripgrep fzf
+        # Hier installierst du alles, was du für deine Konfiguration benötigst.
+        
+    - name: Setup Neovim Configuration
       run: |
-        # Install any additional dependencies your config needs
-        sudo apt install -y ripgrep fzf
-
-    - name: Open Neovim
+        rm -rf ~/.config/nvim
+        mkdir -p ~/.config/nvim
+        git clone https://github.com/Fiko767/test.git ~/.config/nvim
+        
+    - name: Install Plugins using lazy.nvim
       run: |
-        # Öffne Neovim ohne headless Mode, damit es offen bleibt
-        nohup nvim &
+        nvim --headless +LazyInstall +qall
+
+    - name: Set up Cloud VM and Web Access (z.B. noVNC)
+      run: |
+        # Hier startet GitHub Actions eine Cloud-VM mit einer Weboberfläche.
+        # Setzt z.B. noVNC oder einen Webserver für den Zugriff auf Neovim auf.
+
+    - name: Provide URL to Access Neovim in Browser
+      run: |
+        echo "Neovim is available at: https://your-cloud-instance-url"
