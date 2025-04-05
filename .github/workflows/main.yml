@@ -26,20 +26,6 @@ jobs:
         # Install any additional dependencies your config needs
         sudo apt install -y ripgrep fzf
 
-    - name: Set up Neovim configuration
-      run: |
-        # Lösche das Standard-Neovim-Konfigurationsverzeichnis (falls es existiert)
-        rm -rf ~/.config/nvim
-        
-        # Kopiere die Konfiguration aus dem Repository
-        mkdir -p ~/.config/nvim
-        cp -r ./path/to/your/nvim/config/* ~/.config/nvim/
-
-    - name: Install Neovim Plugins with lazy.nvim
-      run: |
-        # Installiere Plugins mit lazy.nvim
-        nvim --headless +LazyInstall +qall
-
     - name: Open Neovim
       run: |
         # Öffne Neovim ohne headless Mode, damit es offen bleibt
