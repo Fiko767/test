@@ -1,0 +1,36 @@
+name: Test Neovim Config
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Neovim
+      run: |
+        sudo apt update
+        sudo apt install -y neovim
+
+    - name: Install dependencies
+      run: |
+        # Install any additional dependencies your config needs
+        sudo apt install -y ripgrep fzf
+
+    - name: Test Neovim configuration
+      run: |
+        # Set up a minimal configuration to test your setup
+        nvim --headless +PlugInstall +qall
+        nvim --headless +MasonUpdate +qall
+        # Hier kannst du Tests für deine Konfiguration einfügen, z.B. öffnen eines Files und prüfen
+        nvim --headless -c 'qa!'
+
