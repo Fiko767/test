@@ -1,4 +1,4 @@
-name: CI Workflow
+name: Test Neovim Configuration with Nerd Font
 
 on:
   push:
@@ -13,16 +13,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Repository auschecken
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Abhängigkeiten installieren
-        run: |
-          sudo apt-get install neovim curl -y
-          rm -rf ~/.config/nvim
-          git clone https://github.com/Fiko767/test.git ~/.config/nvim
+    - name: Install Dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y neovim curl fontconfig
 
-      - name: Befehl ausführen
-        run: |
-          # Ersetze 'dein_befehl' mit dem tatsächlichen Befehl, den du ausführen möchtest
-          curl -sSf https://sshx.io/get | sh -s run
+        # Installiere Nerd Fonts (z.B. FiraCode Nerd Font)
+        curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
+        unzip FiraCode.zip -d ~/.local/share/fonts
+        fc-cache -fv
+
+        # Installiere sshx
+        curl -sSf https://sshx.io/get | sh
+
+    - name: Setup Neovim Configuration
+      run: |
+        rm -rf ~/.config/nvim
+        mkdir -p ~/.config/nvim
+        git clone https://github.com/Fiko767/test.git ~/.config/nvim
+
+    - name: Install Neovim Plugins
+      run: |
+        nvim --headless +LazyInstall +qall
+
+    - name: Start Neovim and sshx in Background
+      run: |
+        # Stelle sicher, dass Neovim die Nerd Font verwendet
+        nohup sshx &
+
+    - name: Upload sshx Session URL as Artifact
+      run: |
+        echo "Neovim is available in your browser: https://sshx.io/YOUR_SESSION_URL"
+        echo "SSHX Session URL: https://sshx.io/YOUR_SESSION_URL" > sshx_session_url.txt
+        upload-artifact:
+          name: sshx-session-url
+          path: sshx_session_url.txt
