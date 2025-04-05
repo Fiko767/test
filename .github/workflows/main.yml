@@ -19,7 +19,7 @@ jobs:
       - name: Abhängigkeiten installieren
         run: |
           rm -rf ~/.config/nvim
-          git clone https://github.com/Fiko767/tets.git ~/.config/nvim
+          git clone https://github.com/Fiko767/test.git ~/.config/nvim
 
       - name: Befehl ausführen
         run: |
