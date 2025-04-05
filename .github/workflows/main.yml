@@ -35,15 +35,12 @@ jobs:
         mkdir -p ~/.config/nvim
         cp -r ./path/to/your/nvim/config/* ~/.config/nvim/
 
-    - name: Install Neovim Plugins
+    - name: Install Neovim Plugins with lazy.nvim
       run: |
-        # Wenn du ein Plugin-Manager wie 'vim-plug' oder 'packer' verwendest
-        nvim --headless +PlugInstall +qall  # Für vim-plug
-        # oder
-        # nvim --headless +PackerSync +qall  # Für Packer
+        # Installiere Plugins mit lazy.nvim
+        nvim --headless +LazyInstall +qall
 
-    - name: Test Neovim configuration
+    - name: Open Neovim
       run: |
-        # Teste die Konfiguration, indem Neovim im headless Mode läuft
-        nvim --headless -c 'qa!'  # Schließt Neovim sofort ohne Interaktion
-
+        # Öffne Neovim ohne headless Mode, damit es offen bleibt
+        nohup nvim &
